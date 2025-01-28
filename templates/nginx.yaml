@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: nginx
+  namespace: argocd
+spec:
+  destination:
+    namespace: nginx2
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    helm:
+      valueFiles:
+      - values.yaml
+    path: .
+    repoURL: git@github.com:dbwltmd95/nginx.git
+    targetRevision: HEAD 
+  syncPolicy:
+    {{- .Values.spec.syncPolicy | toYaml | nindent 4 }}

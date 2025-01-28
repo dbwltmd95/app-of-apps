@@ -1,0 +1,19 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: jenkins
+  namespace: argocd
+spec:
+  destination:
+    namespace: jenkins
+    server: https://kubernetes.default.svc
+  project: default
+  source:
+    helm:
+      valueFiles:
+      - values.yaml
+    path: .
+    repoURL: git@github.com:dbwltmd95/jenkins.git
+    targetRevision: HEAD 
+  syncPolicy:
+    {{- .Values.spec.syncPolicy | toYaml | nindent 4 }}
